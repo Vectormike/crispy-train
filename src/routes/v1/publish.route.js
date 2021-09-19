@@ -1,14 +1,8 @@
 const express = require('express');
-const auth = require('../../middlewares/auth');
-const validate = require('../../middlewares/validate');
-const userValidation = require('../../validations/user.validation');
-const userController = require('../../controllers/user.controller');
+const publishController = require('../../controllers/publish.controller');
 
 const router = express.Router();
 
-router
-  .route('/publish')
-  .post(auth('manageUsers'), validate(userValidation.createUser), userController.createUser)
+router.route('/:topic').post(publishController.publishTopic);
 
 module.exports = router;
-

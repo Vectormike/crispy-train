@@ -1,48 +1,62 @@
 /* eslint-disable no-unused-expressions */
-const redis = require('redis');
-const { redisHost, redisPort } = require('./config');
+const { createClient } = require('redis');
 const logger = require('./logger');
 
-const client = redis.createClient();
+const client = createClient();
 
-const set = (key, value) => {
-  client.setex(key, 200, JSON.stringify(value));
-};
+client.on('connect', () => {
+  logger.info('Client connected to redis...');
+});
 
-const get = (req, res, next) => {
-  const key = req.route.path;
-  client.get(key, (error, data) => {
-    if (error) res.status(400).send(err);
-    if (data !== null) res.status(200).send(JSON.parse(data));
-    else next();
-  });
-};
+client.on('ready', () => {
+  logger.info(' Client connected to redis and ready to use... 🔥');
+});
 
-const publish = (req, res, next) => {
+client.on('error', (err) => {
+  logger.info(err.message);
+});
+
+client.on('end', () => {
+  console.log('Client disconnected from redis');
+});
+
+// const set = (key, value) => {
+//   client.setex(key, 200, JSON.stringify(value));
+// };
+
+// const get = (req, res, next) => {
+//   const key = req.route.path;
+//   client.get(key, (error, data) => {
+//     if (error) res.status(400).send(err);
+//     if (data !== null) res.status(200).send(JSON.parse(data));
+//     else next();
+//   });
+// };
+
+const publish = async (params) => {
   const body = {
     message: 'hello',
   };
 
-  const data = JSON.stringify(req.body.message) || JSON.stringify(body);
+  let uLessonTopic = params.topic;
 
-  const client = redis.createClient();
+  let response = await client.publish(`${uLessonTopic}`, JSON.stringify(body));
 
-  client.publish('uLesson-topic', data, (error, data) => {
-    console.log('Data:', data);
-    if (error) res.status(400).send(error);
-    if (data !== null) res.sendStatus(200).send(JSON.parse(data));
-    else next();
-  });
+  if (response === true) return uLessonTopic;
+  if (response === false) logger.error('Topic not published!');
 };
 
-const subscribe = (req, res, next) => {
-  const client = redis.createClient();
+const subscribe = async (params) => {
+  const subscriber = createClient();
 
-  client.on('message', (channel, message) => {
-    logger.info('Recieved data:' + message);
+  let { topic } = params;
+  let uLessonTopic = JSON.stringify(topic);
+  console.log(uLessonTopic);
+  subscriber.on('message', (channel, message) => {
+    console.log('Received data :' + message);
   });
-
-  client.subscribe('uLesson-topic');
+  const res = subscriber.subscribe('user-notify');
+  console.log(res);
 };
 
-module.exports = { set, get, publish, subscribe };
+module.exports = { publish, subscribe };

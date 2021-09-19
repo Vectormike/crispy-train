@@ -22,4 +22,5 @@ module.exports = {
   port: envVars.PORT,
   redisPort: envVars.REDIS_PORT,
   redisHost: envVars.REDIS_HOST,
+  redisURL: envVars.REDISCLOUD_URL,
 };

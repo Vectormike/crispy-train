@@ -8,8 +8,6 @@ server = app.listen(config.port, () => {
   logger.info(`Listening to port ${config.port}`);
 });
 
-subscribe('ulesson-topic');
-
 const exitHandler = () => {
   if (server) {
     server.close(() => {
