@@ -1,5 +1,4 @@
-<!-- # Redis Pub/Sub
-
+# Redis Pub/Sub
 
 Install the dependencies:
 
@@ -31,7 +30,7 @@ npm start
 
 Testing:
 
-```bash
+````bash
 # run all tests
 npm test
 
@@ -65,17 +64,19 @@ MONGODB_URL=mongodb+srv://Vectormike:Redeemer@cluster0.widnr.mongodb.net/test
 
 ## Project Structure
 
-```
+````
+
 src\
- |--config\         # Environment variables and configuration related things
- |--controllers\    # Route controllers (controller layer)
- |--models\         # Mongoose models (data layer)
- |--routes\         # Routes
- |--services\       # Business logic (service layer)
- |--utils\          # Utility classes and functions
- |--validations\    # Request data validation schemas
- |--app.js          # Express app
- |--index.js        # App entry point
+ |--config\ # Environment variables and configuration related things
+|--controllers\ # Route controllers (controller layer)
+|--models\ # Mongoose models (data layer)
+|--routes\ # Routes
+|--services\ # Business logic (service layer)
+|--utils\ # Utility classes and functions
+|--validations\ # Request data validation schemas
+|--app.js # Express app
+|--index.js # App entry point
+
 ```
 
 ### API Endpoints
@@ -87,3 +88,4 @@ List of available routes:
 
 **Subscribe routes**:\
 `POST /v1/subscribe/:topic` - create and subscribe to a topic\
+```
