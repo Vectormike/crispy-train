@@ -8,19 +8,13 @@ npm install
 
 Set the environment variables:
 
-cp .env.example .env
-
-# open .env and modify the environment variables (if needed)
-
-````
-
 ## Commands
 
 Running locally:
 
 ```bash
 npm run dev
-````
+```
 
 Running in production:
 
